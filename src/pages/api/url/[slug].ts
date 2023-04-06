@@ -18,7 +18,7 @@ const shortUrlBySlugHandler = async (
     const shortUrl = await caller.shortUrl.getBySlug({ slug });
     await caller.shortUrl.incrementVisits({ slug });
     console.log(shortUrl.url);
-    res
+    return res
       .setHeader(
         "Cache-Control",
         "public, s-maxage=2592000, stale-while-revalidate"

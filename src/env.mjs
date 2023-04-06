@@ -7,7 +7,7 @@ import { z } from "zod";
 const server = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
   DATABASE_URL: z.string().url(),
-  SLUG_LENGTH: z.string().regex(/^\d+$/),
+  NEXT_PUBLIC_SLUG_MAX_LENGTH: z.string().regex(/^\d+$/),
 });
 
 /**
@@ -27,7 +27,7 @@ const client = z.object({
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
   DATABASE_URL: process.env.DATABASE_URL,
-  SLUG_LENGTH: process.env.SLUG_LENGTH,
+  NEXT_PUBLIC_SLUG_MAX_LENGTH: process.env.NEXT_PUBLIC_SLUG_MAX_LENGTH,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 

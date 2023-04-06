@@ -6,15 +6,15 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
 model ShortUrl {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
-    url       String   @unique
-    slug      String   @unique
+    url       String   @db.Text
+    slug      String   @unique @db.VarChar(8)
 
     @@index([slug])
 }

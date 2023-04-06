@@ -20,6 +20,18 @@ export const shortUrlRouter = createTRPCRouter({
       if (!shortUrl) throw new TRPCError({ code: "NOT_FOUND" });
       return shortUrl;
     }),
+  incrementVisits: publicProcedure
+    .input(
+      z.object({
+        slug: z.string().max(Number(env.NEXT_PUBLIC_SLUG_MAX_LENGTH)),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.shortUrl.update({
+        where: { slug: input.slug },
+        data: { visits: { increment: 1 } },
+      });
+    }),
   create: publicProcedure
     .input(
       z.object({

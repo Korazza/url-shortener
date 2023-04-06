@@ -16,6 +16,7 @@ const shortUrlBySlugHandler = async (
     const slug = req.query.slug as string;
     console.log(slug);
     const shortUrl = await caller.shortUrl.getBySlug({ slug });
+    await caller.shortUrl.incrementVisits({ slug });
     console.log(shortUrl.url);
     res
       .setHeader(

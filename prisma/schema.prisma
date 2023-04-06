@@ -15,6 +15,7 @@ model ShortUrl {
     createdAt DateTime @default(now())
     url       String   @db.Text
     slug      String   @unique @db.VarChar(8)
+    visits    Int      @default(0) @db.Integer
 
     @@index([slug])
 }

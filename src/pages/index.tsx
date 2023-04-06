@@ -9,7 +9,7 @@ import { env } from "@/env.mjs";
 const HomePage: NextPage = () => {
   const urlInput = useRef<HTMLInputElement>(null);
   const slugInput = useRef<HTMLInputElement>(null);
-  const { mutate, data, isSuccess, error, isError } =
+  const { mutate, data, isLoading, isSuccess, error, isError } =
     api.shortUrl.create.useMutation();
 
   const mutateShortUrl = () => {
@@ -57,6 +57,7 @@ const HomePage: NextPage = () => {
           >
             Generate
           </button>
+          {isLoading && <span className="text-slate-400">Loading...</span>}
           {isSuccess && (
             <Link href={`/to/${data.slug}`} target="_blank">
               {window.location.origin}/to/{data.slug}

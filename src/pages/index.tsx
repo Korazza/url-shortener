@@ -4,16 +4,20 @@ import Head from "next/head";
 import Link from "next/link";
 
 import { api } from "@/utils/api";
+import { env } from "@/env.mjs";
 
 const HomePage: NextPage = () => {
-  const input = useRef<HTMLInputElement>(null);
-  const {
-    mutate: mutateShortUrl,
-    data,
-    isSuccess,
-    error,
-    isError,
-  } = api.shortUrl.create.useMutation();
+  const urlInput = useRef<HTMLInputElement>(null);
+  const slugInput = useRef<HTMLInputElement>(null);
+  const { mutate, data, isSuccess, error, isError } =
+    api.shortUrl.create.useMutation();
+
+  const mutateShortUrl = () => {
+    mutate({
+      url: urlInput.current?.value ?? "",
+      slug: slugInput.current?.value ?? "",
+    });
+  };
 
   return (
     <>
@@ -27,18 +31,32 @@ const HomePage: NextPage = () => {
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-6xl">
             Url Shortener
           </h1>
-          <input
-            ref={input}
-            className="rounded bg-slate-900/75 px-3 py-2 text-slate-50 shadow outline-none"
-            placeholder="https://"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                mutateShortUrl({
-                  url: input.current?.value ?? "",
-                });
-              }
-            }}
-          />
+          <div className="flex w-full place-items-center justify-center gap-2">
+            <input
+              ref={urlInput}
+              className="rounded bg-slate-900/75 px-3 py-2 text-slate-50 shadow outline-none"
+              placeholder="https://..."
+              onKeyDown={(e) => {
+                if (e.key === "Enter") mutateShortUrl();
+              }}
+            />
+            <span className="text-slate-400">/to/</span>
+            <input
+              ref={slugInput}
+              maxLength={Number(env.NEXT_PUBLIC_SLUG_MAX_LENGTH)}
+              className="w-28 rounded bg-slate-900/75 py-2 text-center text-slate-50 shadow outline-none"
+              placeholder="slug..."
+              onKeyDown={(e) => {
+                if (e.key === "Enter") mutateShortUrl();
+              }}
+            />
+          </div>
+          <button
+            className="rounded-full bg-blue-900 px-5 py-2 shadow-lg transition hover:bg-blue-900/75 active:bg-blue-900/50"
+            onClick={mutateShortUrl}
+          >
+            Generate
+          </button>
           {isSuccess && (
             <Link href={`/to/${data.slug}`} target="_blank">
               {window.location.origin}/to/{data.slug}

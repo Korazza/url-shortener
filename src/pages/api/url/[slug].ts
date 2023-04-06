@@ -14,7 +14,9 @@ const shortUrlBySlugHandler = async (
 
   try {
     const slug = req.query.slug as string;
+    console.log(slug);
     const shortUrl = await caller.shortUrl.getBySlug({ slug });
+    console.log(shortUrl.url);
     res
       .setHeader(
         "Cache-Control",
